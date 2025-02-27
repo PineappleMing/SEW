@@ -24,8 +24,6 @@ Make sure your PyTorch version is compatible with your CUDA version if you plan 
 ### 3.1 Prepare Data
 - Place your medical images in a directory.
 - Create a CSV file named `labels.csv` (you can change the name using the `--label_csv` argument) in the destination root directory. The CSV file should have two columns: `img` (image path) and `label` (image label).
-# Introduction to `labels.csv` Content, Slide Storage Location, and Labels
-
 | Column Name | Description | Example |
 | --- | --- | --- |
 | Slide Directory | The directory where the slide images are stored. This is specified by the `--slide_root` parameter in the training script and is used for operations such as patch cropping. | `/home/lhm/mnt/medical/yxt/liverWSI/Hepatoma_2_5_years_800/` |
