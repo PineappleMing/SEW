@@ -24,10 +24,11 @@ Make sure your PyTorch version is compatible with your CUDA version if you plan 
 ### 3.1 Prepare Data
 - Place your medical images in a directory.
 - Create a CSV file named `labels.csv` (you can change the name using the `--label_csv` argument) in the destination root directory. The CSV file should have two columns: `img` (image path) and `label` (image label).
-| Column Name | Description | Example |
-| --- | --- | --- |
-| Slide Directory | The directory where the slide images are stored. This is specified by the `--slide_root` parameter in the training script and is used for operations such as patch cropping. | `/home/lhm/mnt/medical/yxt/liverWSI/Hepatoma_2_5_years_800/` |
-| Label (Prognosis or Classification) | The label represents the prognosis status (good or poor prognosis) or the classification/typing of the disease. This label is used for model training and classification. | `0` for good prognosis, `1` for poor prognosis; or `1` for Type A, `2` for Type B |
+
+| Column Name | Description | Example                                                                              |
+| --- | --- |--------------------------------------------------------------------------------------|
+| Slide Directory | The directory where the slide images are stored. This is specified by the `--slide_root` parameter in the training script and is used for operations such as patch cropping. | `/path/to/your/slides`                                                               |
+| Label (Prognosis or Classification) | The label represents the prognosis status (good or poor prognosis) or the classification/typing of the disease. This label is used for model training and classification. | `0` for good prognosis, `1` for poor prognosis; or `1` for Type A, `2` for Type B    |
 | Lesion Area Annotation | The annotation of the lesion area in the slide image. This can be in the form of coordinates, masks, or other relevant annotation information, which helps in further analysis and model training. | `[(x1, y1), (x2, y2), ...]` representing the boundary coordinates of the lesion area | 
 ### 3.2 Run the Preprocessing Script
 The preprocessing script converts images into superpixel graphs and saves relevant graph information. You can run the script with the following command:
@@ -37,20 +38,22 @@ python preprocess.py --dst_root /path/to/destination --label_csv your_labels.csv
 - `--dst_root`: The root directory where the processed data will be saved. Default is `/path/to/dst`.
 - `--label_csv`: The path to the CSV file containing image labels. Default is `labels.csv`.
 - `--n_segments`: The number of segments for superpixel segmentation. Default is 3072.
+- `*`: other parameters about how to build superpixel graph can be found in `preprocess.py`
 
-The script will create three sub - directories (`patch`, `segments`, `graph`) in the `dst_root` directory to store intermediate and final results.
+The script will create three sub-directories (`patch`, `segments`, `graph`) in the `dst_root` directory to store intermediate and final results.
 
 ## 4. Model Training
 
 ### 4.1 Configure Training Parameters
 You can configure various training parameters through command - line arguments. For example:
 ```bash
-python train.py --epochs 100 --batch_size 1 --lr1 0.001 --lr2 0.001 --lr_transformer2 0.01
+python train.py --epochs 100 --batch_size 4 --lr 0.001 
 ```
 - `--epochs`: The number of training epochs. Default is 100.
 - `--batch_size`: The batch size for training. Default is 1.
-- `--lr1`, `--lr2`, `--lr_transformer2`: Learning rates for different models. Default values are 0.001, 0.001, and 0.01 respectively.
-
+- `--lr`, : Learning rates for different models. 
+- `--data`: Data directory which created on preprocess stage
+- `*`: other hyper parameters can found in `train.py`
 ## 5. Monitoring Training Progress
 You can use TensorBoard to monitor the training progress. Start TensorBoard with the following command:
 ```bash
